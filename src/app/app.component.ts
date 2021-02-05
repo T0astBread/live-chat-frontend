@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Message } from 'src/models/Message';
+import { ChatService } from './chat.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'symflower-live-chat';
+  userId: number | null = 2;
+  messages: Message[] = [];
+
+  constructor(private chat: ChatService) {
+    this.chat.loadMessages()
+      .subscribe(messages => this.messages = messages)
+  }
+
+  onRegisterFormSubmit(evt: Event) {
+    const form = evt.currentTarget as HTMLFormElement
+    console.log("New username: ", form.username.value)
+    evt.preventDefault()
+  }
 }
