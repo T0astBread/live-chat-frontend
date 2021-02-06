@@ -36,7 +36,7 @@ I was asked to document my decisions while writing this (also see the
 I could have integrated the front- and backend into one Git
 repository and possibly also coupled some code generation in the
 frontend to shared schema files. However, I decided that was not
-worth the effort since the schema is relatively small in the case.
+worth the effort since the schema is relatively small in this case.
 
 Keeping the front- and backend separate also allowed me to work on
 them more independently.
