@@ -12,10 +12,26 @@ export class ChatService {
   constructor(private apollo: Apollo) { }
 
   loadMessages(): Observable<Message[]> {
-    return this.apollo
-      .query({
-        query: gql`{
-          messages {
+    return this.apollo.query({
+      query: gql`{
+        messages {
+          content
+          poster {
+            name
+          }
+        }
+      }`})
+      .pipe(
+        map(({ data }: any) => (data.messages as any[])
+          .map(m => mustBe("Message", m)))
+      )
+  }
+
+  subscribeToMessages(): Observable<Message> {
+    return this.apollo.subscribe({
+      query: gql`
+        subscription onMessagePosted {
+          messagePosted {
             content
             poster {
               name
@@ -23,8 +39,7 @@ export class ChatService {
           }
         }`})
       .pipe(
-        map(({ data }: any) => (data.messages as any[]) 
-          .map(m => mustBe("Message", m)))
+        map(({ data }: any) => mustBe("Message", data.messagePosted))
       )
   }
 }

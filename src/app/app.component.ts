@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Message } from 'src/models/Message';
 import { ChatService } from './chat.service';
 
@@ -7,13 +7,20 @@ import { ChatService } from './chat.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   userId: number | null = 2;
   messages: Message[] = [];
 
   constructor(private chat: ChatService) {
-    this.chat.loadMessages()
-      .subscribe(messages => this.messages = messages)
+  }
+
+  async ngOnInit() {
+    this.messages = await this.chat
+      .loadMessages()
+      .toPromise()
+    this.chat
+      .subscribeToMessages()
+      .subscribe(msg => this.messages = [...this.messages, msg])
   }
 
   onRegisterFormSubmit(evt: Event) {
