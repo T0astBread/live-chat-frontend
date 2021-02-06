@@ -1,0 +1,9 @@
+{
+	admin off
+	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+http://localhost:8080, http://127.0.0.1:8080
+
+root * /srv
+file_server
