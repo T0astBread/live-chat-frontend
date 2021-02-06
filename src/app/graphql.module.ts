@@ -6,8 +6,8 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { OperationDefinitionNode } from 'graphql';
 
-const httpURI = 'http://127.0.0.1:8080/query';
-const wsURI = 'ws://127.0.0.1:8080/query';
+const httpURI = 'http://127.0.0.1:8081/query';
+const wsURI = 'ws://127.0.0.1:8081/query';
 
 @NgModule({
   providers: [
