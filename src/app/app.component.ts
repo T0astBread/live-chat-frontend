@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Message } from 'src/models/Message';
+import { User } from 'src/models/User';
 import { ChatService } from './chat.service';
 
 @Component({
@@ -8,24 +9,33 @@ import { ChatService } from './chat.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  userId: number | null = 2;
+  user: User | null = null;
   messages: Message[] = [];
 
-  constructor(private chat: ChatService) {
+  constructor(private chat: ChatService) { }
+
+  ngOnInit() {
+    // Uncomment for development (but don't forget to comment again)
+    // this.register("dummy user")
   }
 
-  async ngOnInit() {
+  async onRegisterFormSubmit(evt: Event) {
+    evt.preventDefault()
+    const form = evt.currentTarget as HTMLFormElement
+    const username = form.username.value
+    this.register(username)
+  }
+
+  async register(username: string) {
+    this.user = await this.chat
+      .registerUser(username)
+      .toPromise()
+
     this.messages = await this.chat
       .loadMessages()
       .toPromise()
     this.chat
       .subscribeToMessages()
       .subscribe(msg => this.messages = [...this.messages, msg])
-  }
-
-  onRegisterFormSubmit(evt: Event) {
-    const form = evt.currentTarget as HTMLFormElement
-    console.log("New username: ", form.username.value)
-    evt.preventDefault()
   }
 }

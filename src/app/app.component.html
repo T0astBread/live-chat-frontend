@@ -1,10 +1,11 @@
-<div class="username-input" *ngIf="userId == null">
+<div class="username-input" *ngIf="user == null">
 	<form (submit)="onRegisterFormSubmit($event)">
 		<label for="username">Username:</label>
 		<input id="username" />
 	</form>
 </div>
-<ul *ngIf="userId != null">
+<ul *ngIf="user != null">
+	<p>Logged in as <strong>{{ user.name }}</strong></p>
 	<li *ngFor="let message of messages">
 		{{ message.poster?.name }}<br>
 		{{ message.content }}
