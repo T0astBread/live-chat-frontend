@@ -64,4 +64,23 @@ export class ChatService {
         map(({ data }: any) => mustBe("Message", data.messagePosted))
       )
   }
+
+  postMessage(content: string, poster: User): Observable<any> {
+    return this.apollo.mutate({
+      mutation: gql`
+        mutation PostMessage($content: String!, $posterId: Int!) {
+          postMessage(input: {
+            content: $content,
+            posterId: $posterId
+          }) {
+            id
+          }
+        }
+      `,
+      variables: {
+        content,
+        posterId: poster.id,
+      },
+    })
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Message } from 'src/models/Message';
 import { User } from 'src/models/User';
 import { ChatService } from './chat.service';
@@ -11,6 +11,7 @@ import { ChatService } from './chat.service';
 export class AppComponent implements OnInit {
   user: User | null = null;
   messages: Message[] = [];
+  messageInput = "";
 
   constructor(private chat: ChatService) { }
 
@@ -26,6 +27,12 @@ export class AppComponent implements OnInit {
     this.register(username)
   }
 
+  onMessageFormSubmit(evt: Event) {
+    evt.preventDefault()
+    this.post(this.messageInput)
+    this.messageInput = ""
+  }
+
   async register(username: string) {
     this.user = await this.chat
       .registerUser(username)
@@ -37,5 +44,12 @@ export class AppComponent implements OnInit {
     this.chat
       .subscribeToMessages()
       .subscribe(msg => this.messages = [...this.messages, msg])
+  }
+
+  async post(message: string) {
+    await this.chat
+      .postMessage(message, this.user!)
+      .toPromise()
+    console.info("Posted a message:", message)
   }
 }

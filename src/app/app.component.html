@@ -10,4 +10,7 @@
 		{{ message.poster?.name }}<br>
 		{{ message.content }}
 	</li>
+	<form (submit)="onMessageFormSubmit($event)">
+		<input name="message" [(ngModel)]="messageInput" />
+	</form>
 </ul>
