@@ -34,9 +34,14 @@ export class AppComponent implements OnInit {
   }
 
   async register(username: string) {
-    this.user = await this.chat
-      .registerUser(username)
-      .toPromise()
+    try {
+      this.user = await this.chat
+        .registerUser(username)
+        .toPromise()
+    } catch(e) {
+      alert(e)
+      throw e
+    }
 
     this.messages = await this.chat
       .loadMessages()
